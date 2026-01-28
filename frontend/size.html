@@ -611,7 +611,7 @@
   </div>
 
   <script>
-    const API_BASE = window.APP_CONFIG?.API_BASE;
+    const API_BASE = (window.APP_CONFIG?.API_BASE || "").replace(/\/$/, "");
 
     const dom = {
       sizesList: document.getElementById("sizes-list"),
