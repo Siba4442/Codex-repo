@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Menu Extractor - Validate Categories</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="./config.js"></script>
+  <link rel="icon" href="./img/favicon.ico" sizes="any">
+
+  <style>
+    :root {
+      --accent: #ea4e59;
+      --accent-hover: #d9444f;
+      --bg-light: #f4f7fa;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    html, body { overflow-x: hidden; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .header-section { text-align: center; margin-bottom: 30px; }
+
+    .brand{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin: 0 auto 14px;
+    }
+
+    .brand-logo{
+      height: 60px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      display:block;
+    }
+
+    h2 { margin: 0 0 10px; font-size: 24px; }
+    p { margin: 0 0 20px; color: var(--text-muted); font-size: 14px; }
+
+    .meta { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+    .badge {
+      padding: 6px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .badge b { color: var(--accent); }
+
+    .page-section { margin-top: 30px; }
+    .page-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--bg-light);
+      padding-bottom: 5px;
+    }
+
+    .cat-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .category-section { 
+      padding: 16px; 
+      background: #fafafa; 
+      border-radius: 12px; 
+      margin-bottom: 12px;
+    }
+
+    .subcategory-list { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 8px; 
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .subcategory-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      margin-left: 20px;
+    }
+
+    .subcategory-row:focus-within {
+      border-color: var(--accent);
+      background: #fff9f9;
+    }
+
+    .subcategory-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      outline: none;
+      min-width: 0;
+    }
+
+    .add-subcat-btn {
+      margin-left: 20px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: #f9f9f9;
+      border: 1px dashed var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .add-subcat-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--pink-soft);
+    }
+
+    .category-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .category-row:focus-within {
+      background-color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .category-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent);
+      outline: none;
+      transition: color 0.3s ease;
+      min-width: 0;
+    }
+
+    .category-row:focus-within .category-input { color: #ffffff; }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fef2f2;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .category-row:focus-within .action-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .action-btn:hover { background: var(--accent); color: white; }
+
+    .add-btn-container { margin-top: 20px; display: flex; justify-content: center; }
+
+    .btn-add {
+      background: #fef2f2;
+      border: 2px dashed var(--accent);
+      color: var(--accent);
+      padding: 12px 24px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+    .btn-add:hover { background: var(--accent); color: white; }
+
+    .footer-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border);
+    }
+
+    button.main {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .primary { background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+    .pink-ghost { background: #fef2f2; color: var(--accent); border: 1px solid var(--accent); }
+    .pink-ghost:hover { background: var(--accent); color: white; }
+
+    .status-msg { text-align: center; margin-top: 15px; font-size: 14px; color: var(--accent); font-weight: 600; }
+    .error { color:#b91c1c; background:#fef2f2; padding:12px; border-radius:12px; margin-top:20px; font-size:13px; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header-section">
+      <a
+        href="https://admin.orderart.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="brand"
+        aria-label="Go to OrderArt Admin"
+      >
+        <img
+          src="./img/logo.jpg"
+          alt="OrderArt"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+      </a>
+
+      <h2>Validate Categories</h2>
+      <p>Review the extracted categories. Use the icons to edit or remove them.</p>
+    </div>
+
+    <div class="meta" id="meta"></div>
+    <div id="content"></div>
+
+    <div class="status-msg" id="status"></div>
+
+    <div class="footer-actions">
+      <button class="main pink-ghost" id="backBtn">Back</button>
+      <button class="main primary" id="extractBtn">Extract Items</button>
+    </div>
+
+    <div class="error" id="error" style="display:none;"></div>
+  </div>
+
+  <script>
+    const API_BASE = window.APP_CONFIG?.API_BASE;
+
+    const dom = {
+      metaEl: document.getElementById("meta"),
+      contentEl: document.getElementById("content"),
+      errorEl: document.getElementById("error"),
+      statusEl: document.getElementById("status"),
+      extractBtn: document.getElementById("extractBtn"),
+      backBtn: document.getElementById("backBtn"),
+    };
+
+    const storage = {
+      jobId: localStorage.getItem("job_id"),
+      restaurantName: localStorage.getItem("restaurant_name"),
+      menuType: localStorage.getItem("menu_type"),
+      phase1Raw: localStorage.getItem("phase1_result"),
+    };
+
+    const isMissingRequiredState =
+      !storage.restaurantName || !storage.phase1Raw || !storage.jobId;
+
+    if (isMissingRequiredState) {
+      window.location.href = "./index.html";
+    }
+
+    let phase1 = JSON.parse(storage.phase1Raw);
+
+    let isDirty = false;
+    function markDirty() { isDirty = true; }
+
+    function escText(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function resetFeedback() {
+      dom.errorEl.style.display = "none";
+      dom.errorEl.textContent = "";
+      dom.statusEl.textContent = "";
+    }
+
+    function setError(message) {
+      dom.errorEl.textContent = message;
+      dom.errorEl.style.display = "block";
+    }
+
+    function setStatus(message) {
+      dom.statusEl.textContent = message;
+    }
+
+    function setExtractLoading(isLoading) {
+      dom.extractBtn.disabled = isLoading;
+      dom.extractBtn.textContent = isLoading ? "Processing..." : "Extract Items";
+    }
+
+    function createEl(tag, className) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      return el;
+    }
+
+    function renderMeta() {
+      dom.metaEl.innerHTML = `
+        <span class="badge">Restaurant: <b>${escText(storage.restaurantName)}</b></span>
+        <span class="badge">Type: <b>${escText(storage.menuType || "-")}</b></span>
+      `;
+    }
+
+    function renderCategoryRow({ pageIndex, categoryIndex, category }) {
+      const section = createEl("div", "category-section");
+
+      // Category name row
+      const row = createEl("div", "category-row");
+
+      const input = createEl("input", "category-input");
+      input.value = category.name_raw || "";
+      input.placeholder = "Category Name...";
+      input.addEventListener("input", (e) => {
+        phase1.pages[pageIndex].data.categories[categoryIndex].name_raw = e.target.value;
+        markDirty();
+      });
+
+      const editBtn = createEl("button", "action-btn");
+      editBtn.type = "button";
+      editBtn.innerHTML = `<i data-lucide="pen-line" style="width:16px;"></i>`;
+      editBtn.onclick = () => input.focus();
+
+      const delBtn = createEl("button", "action-btn");
+      delBtn.type = "button";
+      delBtn.innerHTML = `<i data-lucide="trash-2" style="width:16px;"></i>`;
+      delBtn.onclick = () => {
+        phase1.pages[pageIndex].data.categories.splice(categoryIndex, 1);
+        markDirty();
+        render();
+      };
+
+      row.appendChild(input);
+      row.appendChild(editBtn);
+      row.appendChild(delBtn);
+      section.appendChild(row);
+
+      // Subcategories list
+      const subcats = category.subcategories || [];
+      if (subcats.length > 0) {
+        const subcatList = createEl("div", "subcategory-list");
+        subcats.forEach((subcat, subcatIndex) => {
+          const subcatRow = createEl("div", "subcategory-row");
+
+          const subcatInput = createEl("input", "subcategory-input");
+          subcatInput.value = subcat.name_raw || "";
+          subcatInput.placeholder = "Subcategory name...";
+          subcatInput.addEventListener("input", (e) => {
+            phase1.pages[pageIndex].data.categories[categoryIndex].subcategories[subcatIndex].name_raw = e.target.value;
+            markDirty();
+          });
+
+          const subcatDelBtn = createEl("button", "action-btn");
+          subcatDelBtn.type = "button";
+          subcatDelBtn.style.width = "32px";
+          subcatDelBtn.style.height = "32px";
+          subcatDelBtn.style.fontSize = "13px";
+          subcatDelBtn.innerHTML = `<i data-lucide="x" style="width:14px;"></i>`;
+          subcatDelBtn.onclick = () => {
+            phase1.pages[pageIndex].data.categories[categoryIndex].subcategories.splice(subcatIndex, 1);
+            markDirty();
+            render();
+          };
+
+          subcatRow.appendChild(subcatInput);
+          subcatRow.appendChild(subcatDelBtn);
+          subcatList.appendChild(subcatRow);
+        });
+        section.appendChild(subcatList);
+      }
+
+      // Add subcategory button
+      const addSubcatContainer = createEl("div");
+      const addSubcatBtn = createEl("button", "add-subcat-btn");
+      addSubcatBtn.type = "button";
+      addSubcatBtn.textContent = "+ Add Subcategory";
+      addSubcatBtn.onclick = () => {
+        if (!category.subcategories) category.subcategories = [];
+        category.subcategories.push({ name_raw: "New Subcategory" });
+        markDirty();
+        render();
+      };
+      addSubcatContainer.appendChild(addSubcatBtn);
+      section.appendChild(addSubcatContainer);
+
+      return section;
+    }
+
+    function renderAddCategoryButton(page, pageIndex) {
+      const addContainer = createEl("div", "add-btn-container");
+      const addBtn = createEl("button", "btn-add");
+      addBtn.type = "button";
+      addBtn.innerHTML = `+ Add New Category to Page ${page.page_number}`;
+      addBtn.onclick = () => {
+        phase1.pages[pageIndex].data.categories.push({ name_raw: "New Category" });
+        markDirty();
+        render();
+      };
+      addContainer.appendChild(addBtn);
+      return addContainer;
+    }
+
+    function renderPageSection(page, pageIndex) {
+      const pageSection = createEl("div", "page-section");
+
+      const title = createEl("div", "page-title");
+      title.textContent = `Page ${page.page_number}`;
+      pageSection.appendChild(title);
+
+      const catList = createEl("div", "cat-list");
+
+      page.data.categories.forEach((category, categoryIndex) => {
+        const row = renderCategoryRow({ pageIndex, categoryIndex, category });
+        catList.appendChild(row);
+      });
+
+      pageSection.appendChild(catList);
+      pageSection.appendChild(renderAddCategoryButton(page, pageIndex));
+
+      return pageSection;
+    }
+
+    function render() {
+      dom.contentEl.innerHTML = "";
+      renderMeta();
+
+      phase1.pages.forEach((page, pageIndex) => {
+        dom.contentEl.appendChild(renderPageSection(page, pageIndex));
+      });
+
+      lucide.createIcons();
+    }
+
+    async function parseError(response) {
+      try {
+        const text = await response.text();
+        try {
+          const j = JSON.parse(text);
+          return typeof j?.detail === "string" ? j.detail : JSON.stringify(j?.detail || j);
+        } catch {
+          return text;
+        }
+      } catch {
+        return "Unknown error occurred";
+      }
+    }
+
+    async function fetchPhase1(jobId) {
+      const response = await fetch(`${API_BASE}/api/phase1/${encodeURIComponent(jobId)}`);
+      if (!response.ok) throw new Error(await parseError(response));
+      const json = await response.json();
+      return json.data;
+    }
+
+  
+    async function savePhase1Reviewed(jobId, phase1Data) {
+      const url = `${API_BASE}/api/phase1/${encodeURIComponent(jobId)}`;
+
+      const payload = {
+        job_id: jobId,
+        data: phase1Data,
+      };
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error(await parseError(response));
+      return response.json();
+    }
+
+    async function extractItems(jobId) {
+      const response = await fetch(
+        `${API_BASE}/api/phase2/extract?job_id=${encodeURIComponent(jobId)}`,
+        { method: "POST" }
+      );
+      if (!response.ok) throw new Error(await parseError(response));
+      return response.json();
+    }
+
+    dom.backBtn.onclick = () => {
+      window.location.href = "./index.html";
+    };
+
+    dom.extractBtn.onclick = async () => {
+      resetFeedback();
+      setExtractLoading(true);
+
+      try {
+        if (!phase1.restaurant_name) {
+          phase1.restaurant_name = storage.restaurantName;
+          markDirty();
+        }
+
+        if (isDirty) {
+          setStatus("Saving reviewed categories...");
+          await savePhase1Reviewed(storage.jobId, phase1);
+          localStorage.setItem("phase1_reviewed", JSON.stringify(phase1));
+          localStorage.setItem("phase1_result", JSON.stringify(phase1));
+          isDirty = false;
+        } else {
+          setStatus("No category changes — continuing...");
+        }
+
+        setStatus("Extracting menu items... This may take a minute.");
+        const data = await extractItems(storage.jobId);
+
+        localStorage.setItem("phase2_result", JSON.stringify(data.data));
+        window.location.href = "items.html";
+      } catch (err) {
+        setStatus("");
+        setExtractLoading(false);
+        setError("Extraction failed: " + (err?.message || String(err)));
+      }
+    };
+
+    (async function init() {
+      try {
+        if (API_BASE) {
+          const latest = await fetchPhase1(storage.jobId);
+          if (latest) {
+            phase1 = latest;
+            localStorage.setItem("phase1_result", JSON.stringify(phase1));
+          }
+        }
+      } catch (e) {
+        // fallback to localStorage silently
+      } finally {
+        render();
+      }
+    })();
+  </script>
+</body>
+</html>

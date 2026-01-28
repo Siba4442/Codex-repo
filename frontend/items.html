@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Menu Extractor - Review Items</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #ea4e59; 
+      --accent-hover: #d9444f;
+      --bg-light: #f4f7fa;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --field-bg: #f8fafc;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2 { margin: 0 0 10px; font-size: 24px; }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .badge b { color: var(--accent); }
+
+    .category-header {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subcat-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 25px 0 10px;
+      text-transform: uppercase;
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    .column-header-row {
+      display: grid;
+      grid-template-columns: 2fr 4fr 100px;
+      gap: 12px;
+      padding: 0 16px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 2fr 4fr 100px;
+      gap: 12px;
+      align-items: stretch;
+      padding: 10px 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    input, textarea {
+      min-width: 0;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+      background: var(--field-bg);
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-dark);
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 44px;
+      line-height: 1.4;
+    }
+
+    input:hover, textarea:hover {
+      background: #f1f5f9;
+      border-color: var(--border);
+    }
+
+    .item-name { color: var(--accent); font-weight: 700; }
+    .item-price { font-weight: 700; text-align: center; height: 44px; }
+    .item-desc { color: var(--text-muted); font-size: 13px; }
+
+    .item-row:focus-within {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.01);
+    }
+
+    .item-row:focus-within input,
+    .item-row:focus-within textarea {
+      color: #fff !important;
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .item-row:focus-within .action-btn {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #fef2f2;
+      color: var(--accent);
+      transition: 0.2s;
+    }
+
+    .action-btn:hover { background: var(--accent); color: #fff; }
+
+    .btn-add {
+      background: #fef2f2;
+      border: 2px dashed var(--accent);
+      color: var(--accent);
+      padding: 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      width: 100%;
+      margin: 10px 0 40px;
+      transition: 0.2s;
+    }
+
+    .btn-add:hover { background: var(--accent); color: white; }
+
+    .footer-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border);
+      padding-top: 25px;
+    }
+
+    button.main {
+      flex: 1;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .brand{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin: 0 auto 14px;
+    }
+
+    .brand-logo{
+      height: 60px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      display:block;
+    }
+
+    .primary { background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .pink-ghost { background: #fef2f2; color: var(--accent); border: 1px solid var(--accent); }
+  </style>
+
+  <link rel="icon" href="./img/favicon.ico" sizes="any">
+  <script src="./config.js"></script>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header-section">
+      <a
+        href="https://admin.orderart.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="brand"
+        aria-label="Go to OrderArt Admin"
+      >
+        <img
+          src="./img/logo.jpg"
+          alt="OrderArt"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+      </a>
+      <h2>Review Menu Items</h2>
+    </div>
+
+    <div class="meta" id="meta"></div>
+    <div id="items-container"></div>
+
+    <div class="footer-actions">
+      <button class="main pink-ghost" id="prevBtn">Back</button>
+      <button class="main primary" id="nextBtn">Next Category</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.APP_CONFIG?.API_BASE;
+
+    const dom = {
+      container: document.getElementById("items-container"),
+      metaEl: document.getElementById("meta"),
+      nextBtn: document.getElementById("nextBtn"),
+      prevBtn: document.getElementById("prevBtn"),
+    };
+
+    const storage = {
+      jobId: localStorage.getItem("job_id"),
+      menuRaw: localStorage.getItem("phase2_result"),
+    };
+
+    if (!storage.jobId) {
+      window.location.href = "./index.html";
+    }
+
+    // Track whether user changed anything on this page
+    let isDirty = false;
+    function markDirty() { isDirty = true; }
+
+    async function parseError(response) {
+      try {
+        const j = await response.json();
+        return j?.detail || JSON.stringify(j);
+      } catch {
+        return await response.text();
+      }
+    }
+
+    async function fetchPhase2(jobId) {
+      const response = await fetch(`${API_BASE}/api/phase2/${encodeURIComponent(jobId)}`);
+      if (!response.ok) throw new Error(await parseError(response));
+      const json = await response.json();
+      return json.data;
+    }
+
+    async function savePhase2Reviewed(jobId, phase2Data) {
+      const response = await fetch(`${API_BASE}/api/phase2/${encodeURIComponent(jobId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          job_id: jobId,
+          data: phase2Data,
+        }),
+      });
+
+      if (!response.ok) throw new Error(await parseError(response));
+      return response.json();
+    }
+
+    let currentCatIdx = parseInt(localStorage.getItem("review_idx")) || 0;
+
+    // escape helpers
+    function escAttr(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+    function escText(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    let menuData = null;
+    if (storage.menuRaw) {
+      const parsed = JSON.parse(storage.menuRaw);
+      menuData = parsed?.data ? parsed.data : parsed; // ✅ tolerate wrapper or direct
+    }
+
+    function ensureMenuDataOrRedirect() {
+      if (!menuData) window.location.href = "./index.html";
+    }
+
+    function flattenCategories(menu) {
+      const result = [];
+      (menu?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          result.push({
+            page_num: page.page_number,
+            catRef: cat,
+          });
+        });
+      });
+      return result;
+    }
+
+    let allCategories = menuData ? flattenCategories(menuData) : [];
+
+    function saveMenuData() {
+      localStorage.setItem("phase2_result", JSON.stringify(menuData));
+    }
+
+    function setReviewIndex(nextIndex) {
+      currentCatIdx = nextIndex;
+      localStorage.setItem("review_idx", currentCatIdx);
+    }
+
+    function getCurrentCategoryRef() {
+      return allCategories[currentCatIdx].catRef;
+    }
+
+    function getPriceValue(item) {
+      // show number only; currency stays hidden in UI
+      return (
+        item.base_price?.amount ??
+        item.variations?.[0]?.price?.amount ??
+        "0.00"
+      );
+    }
+
+    function ensureItemPriceSchema(item) {
+      // keep backend schema intact, even if missing
+      if (item.base_price && typeof item.base_price === "object") {
+        if (typeof item.base_price.amount !== "number") item.base_price.amount = parseFloat(item.base_price.amount) || 0;
+        if (!item.base_price.currency) item.base_price.currency = "USD";
+        return;
+      }
+
+      if (item.variations?.[0]?.price) {
+        if (typeof item.variations[0].price.amount !== "number") {
+          item.variations[0].price.amount = parseFloat(item.variations[0].price.amount) || 0;
+        }
+        if (!item.variations[0].price.currency) item.variations[0].price.currency = "USD";
+        return;
+      }
+
+      item.base_price = { amount: 0, currency: "USD" };
+    }
+
+    function createEl(tag, className) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      return el;
+    }
+
+    function renderMeta() {
+      dom.metaEl.innerHTML = `
+        <span class="badge">Restaurant: <b>${escText(menuData.restaurant_name)}</b></span>
+        <span class="badge">Category: <b>${currentCatIdx + 1} of ${allCategories.length}</b></span>
+      `;
+    }
+
+    function renderCategoryHeader({ title, pageNum }) {
+      const header = createEl("div");
+      header.innerHTML = `
+        <div class="category-header">
+          <span>${escText(title)}</span>
+          <small>Page ${escText(pageNum)}</small>
+        </div>
+      `;
+      return header;
+    }
+
+    // ✅ UPDATED: no "$" in header
+    function renderColumnHeader() {
+      const headerRow = createEl("div", "column-header-row");
+      headerRow.innerHTML = `
+        <div>Item Name</div>
+        <div>Description</div>
+        <div style="text-align:right">Actions</div>
+      `;
+      return headerRow;
+    }
+
+    function renderItemRow({ item, type, groupIdx, itemIdx }) {
+      const row = createEl("div", "item-row");
+
+      row.innerHTML = `
+        <input
+          class="item-name"
+          value="${escAttr(item.name_raw || "")}"
+          id="f-${type}-${groupIdx}-${itemIdx}"
+          oninput="actions.updateItem('${type}', ${groupIdx}, ${itemIdx}, 'name_raw', this.value)"
+        />
+
+        <textarea
+          class="item-desc"
+          oninput="actions.updateItem('${type}', ${groupIdx}, ${itemIdx}, 'description_raw', this.value)"
+        >${escText(item.description_raw || "")}</textarea>
+
+        <div class="action-group">
+          <button
+            class="action-btn"
+            onclick="document.getElementById('f-${type}-${groupIdx}-${itemIdx}').focus()"
+            type="button"
+          >
+            <i data-lucide="pen-line"></i>
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="actions.removeItem('${type}', ${groupIdx}, ${itemIdx})"
+            type="button"
+          >
+            <i data-lucide="trash-2"></i>
+          </button>
+        </div>
+      `;
+
+      return row;
+    }
+
+    function renderItemList({ items, type, groupIdx }) {
+      const list = createEl("div");
+
+      items.forEach((item, itemIdx) => {
+        list.appendChild(
+          renderItemRow({
+            item,
+            type,
+            groupIdx,
+            itemIdx,
+          })
+        );
+      });
+
+      const addBtn = createEl("button", "btn-add");
+      addBtn.type = "button";
+      addBtn.innerHTML = `+ Add New Item`;
+      addBtn.onclick = () => actions.addItem(type, groupIdx);
+
+      return { list, addBtn };
+    }
+
+    function render() {
+      ensureMenuDataOrRedirect();
+
+      allCategories = flattenCategories(menuData);
+
+      if (allCategories.length === 0) {
+        window.location.href = "./categories.html";
+        return;
+      }
+
+      if (currentCatIdx < 0) currentCatIdx = 0;
+      if (currentCatIdx > allCategories.length - 1) currentCatIdx = allCategories.length - 1;
+
+      const wrapper = allCategories[currentCatIdx];
+      const cat = wrapper.catRef;
+
+      dom.container.innerHTML = "";
+      renderMeta();
+
+      const block = createEl("div");
+
+      block.appendChild(
+        renderCategoryHeader({
+          title: cat.category_name || cat.name_raw || "Category",
+          pageNum: wrapper.page_num,
+        })
+      );
+
+      block.appendChild(renderColumnHeader());
+
+      if (cat.category_items?.length > 0) {
+        cat.category_items.forEach((group, groupIdx) => {
+          const { list, addBtn } = renderItemList({
+            items: group.items || [],
+            type: "category_items",
+            groupIdx,
+          });
+          block.appendChild(list);
+          block.appendChild(addBtn);
+        });
+      }
+
+      if (cat.subcategory_items?.length > 0) {
+        cat.subcategory_items.forEach((sub, subIdx) => {
+          const subTitle = createEl("div", "subcat-title");
+          subTitle.textContent = sub.name_raw || "";
+
+          block.appendChild(subTitle);
+
+          const { list, addBtn } = renderItemList({
+            items: sub.items || [],
+            type: "subcategory_items",
+            groupIdx: subIdx,
+          });
+
+          block.appendChild(list);
+          block.appendChild(addBtn);
+        });
+      }
+
+      dom.container.appendChild(block);
+
+      dom.prevBtn.style.visibility = currentCatIdx === 0 ? "hidden" : "visible";
+
+      dom.nextBtn.textContent =
+        currentCatIdx === allCategories.length - 1
+          ? "Extract Sizes"
+          : "Next Category";
+
+      lucide.createIcons();
+    }
+
+    const actions = {
+      updateItem(type, groupIdx, itemIdx, field, value) {
+        const cat = getCurrentCategoryRef();
+        cat[type][groupIdx].items[itemIdx][field] = value;
+        markDirty();
+        saveMenuData();
+      },
+
+      validatePrice(inputEl, type, groupIdx, itemIdx) {
+        // allow numbers + one dot only
+        inputEl.value = String(inputEl.value ?? "").replace(/[^0-9.]/g, "");
+        const parts = inputEl.value.split(".");
+        if (parts.length > 2) inputEl.value = parts[0] + "." + parts.slice(1).join("");
+
+        const amount = parseFloat(inputEl.value) || 0;
+
+        const cat = getCurrentCategoryRef();
+        const item = cat[type][groupIdx].items[itemIdx];
+
+        // preserve currency silently
+        if (item.base_price) {
+          if (!item.base_price.currency) item.base_price.currency = "USD";
+          item.base_price.amount = amount;
+        } else if (item.variations?.[0]?.price) {
+          if (!item.variations[0].price.currency) item.variations[0].price.currency = "USD";
+          item.variations[0].price.amount = amount;
+        } else {
+          item.base_price = { amount, currency: "USD" };
+        }
+
+        markDirty();
+        saveMenuData();
+      },
+
+      addItem(type, groupIdx) {
+        const cat = getCurrentCategoryRef();
+
+        cat[type][groupIdx].items.push({
+          name_raw: "New Item",
+          description_raw: "",
+          base_price: { amount: 0.0, currency: "USD" }, // currency kept silently
+        });
+
+        markDirty();
+        saveMenuData();
+        render();
+      },
+
+      removeItem(type, groupIdx, itemIdx) {
+        const cat = getCurrentCategoryRef();
+        cat[type][groupIdx].items.splice(itemIdx, 1);
+
+        markDirty();
+        saveMenuData();
+        render();
+      },
+    };
+
+    window.actions = actions;
+
+    async function extractBases() {
+      const response = await fetch(
+        `${API_BASE}/api/phase3/extract?job_id=${encodeURIComponent(storage.jobId)}`,
+        { method: "POST" }
+      );
+
+      if (!response.ok) throw new Error(await parseError(response));
+      return response.json(); // { job_id, data }
+    }
+
+    dom.prevBtn.onclick = () => {
+      if (currentCatIdx === 0) return;
+
+      setReviewIndex(currentCatIdx - 1);
+      render();
+      window.scrollTo(0, 0);
+    };
+
+    dom.nextBtn.onclick = async () => {
+      if (currentCatIdx < allCategories.length - 1) {
+        setReviewIndex(currentCatIdx + 1);
+        render();
+        window.scrollTo(0, 0);
+        return;
+      }
+
+      dom.nextBtn.disabled = true;
+      dom.nextBtn.textContent = "Saving & Redirecting...";
+
+      try {
+        if (!menuData.restaurant_name) {
+          menuData.restaurant_name = localStorage.getItem("restaurant_name") || "";
+          markDirty();
+          saveMenuData();
+        }
+
+        if (isDirty) {
+          await savePhase2Reviewed(storage.jobId, menuData);
+          isDirty = false;
+        }
+
+        localStorage.removeItem("review_idx");
+
+        window.location.href = "size.html";
+      } catch (err) {
+        alert("Finish failed: " + (err?.message || JSON.stringify(err)));
+        console.error(err);
+        dom.nextBtn.disabled = false;
+        dom.nextBtn.textContent = "Extract Sizes";
+      }
+    };
+
+    (async function init() {
+      try {
+        const latest = await fetchPhase2(storage.jobId);
+        if (latest) {
+          menuData = latest;
+          saveMenuData();
+        }
+      } catch (e) {
+        if (!menuData) {
+          window.location.href = "./index.html";
+          return;
+        }
+      } finally {
+        render();
+      }
+    })();
+  </script>
+</body>
+</html>

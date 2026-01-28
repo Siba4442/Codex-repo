@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Extractor - Upload</title>
+  <link rel="icon" href="./img/favicon.ico" type="image/png" />
+  <script src="./config.js"></script>
+  
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --accent: #ea4e59;
+      --accent-hover: #d9434d;
+      --bg-light: #f4f7fa;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --field-bg: #f8fafc;
+      --pink-soft: #fef2f2;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-img {
+      height: 42px;
+      width: auto;
+      margin-bottom: 12px;
+      margin-bottom: 12px;
+      object-fit: contain;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    input,
+    select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--field-bg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:hover,
+    select:hover {
+      background: #f1f5f9;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(242, 78, 78, 0.12);
+      background: #fff;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--pink-soft);
+      border: 1px dashed var(--accent);
+      color: var(--accent);
+    }
+    input::placeholder {
+      color: rgba(234, 78, 89, 0.55);
+      font-weight: 600;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-msg {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .error {
+      display: none;
+      color: #b91c1c;
+      background: var(--pink-soft);
+      padding: 12px;
+      border-radius: 14px;
+      border-left: 4px solid var(--accent);
+      font-size: 13px;
+      margin-top: 18px;
+      font-weight: 600;
+    }
+
+    .logo-link {
+      display: inline-block;
+    }
+    
+    .logo-link .logo-img {
+      cursor: pointer;
+    }
+    
+    .logo-link:hover {
+    opacity: 0.9;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header-section">
+      <a
+        href="https://admin.orderart.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="logo-link"
+      >
+        <img
+          src="./img/logo.jpg"
+          alt="OrderArt"
+          class="logo-img"
+          onerror="this.style.display='none'"
+        />
+      </a>
+      <h2>Menu Extractor</h2>
+      <p class="subtitle">
+        Upload your PDF menu and extract structured data in seconds.
+      </p>
+    </div>
+
+    <div class="form-group">
+      <label>Restaurant Name</label>
+      <input type="text" id="hotelName" placeholder="Type restaurant name" />
+    </div>
+
+    <div class="form-group">
+      <label>Menu Type</label>
+      <select id="menuType">
+        <option value="dinner">Dinner Menu</option>
+        <option value="lunch">Lunch Menu</option>
+        <option value="complete">Complete Menu</option>
+        <option value="snacks">Snacks Menu</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Upload PDF Menu</label>
+      <input type="file" id="pdfFile" accept="application/pdf" />
+    </div>
+
+    <button id="startBtn">Start Processing</button>
+
+    <div class="status-msg" id="status"></div>
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    /**
+     * ============================================
+     * Config
+     * ============================================
+     */
+    const API_BASE = window.APP_CONFIG?.API_BASE;
+
+    /**
+     * ============================================
+     * DOM References
+     * ============================================
+     */
+    const dom = {
+      hotelNameInput: document.getElementById("hotelName"),
+      menuTypeSelect: document.getElementById("menuType"),
+      pdfFileInput: document.getElementById("pdfFile"),
+      startBtn: document.getElementById("startBtn"),
+      statusEl: document.getElementById("status"),
+      errorEl: document.getElementById("error"),
+    };
+
+    /**
+     * ============================================
+     * UI Helpers
+     * ============================================
+     */
+    function resetMessages() {
+      dom.errorEl.style.display = "none";
+      dom.statusEl.textContent = "";
+    }
+
+    function setError(message) {
+      dom.errorEl.textContent = message;
+      dom.errorEl.style.display = "block";
+    }
+
+    function setStatus(message) {
+      dom.statusEl.textContent = message;
+    }
+
+    function setLoading(isLoading) {
+      dom.startBtn.disabled = isLoading;
+      dom.startBtn.textContent = isLoading ? "Processing..." : "Start Processing";
+      setStatus(isLoading ? "Processing... Please wait." : "");
+    }
+
+    /**
+     * ============================================
+     * Validation
+     * ============================================
+     */
+    function validateInputs({ hotelName, pdfFile }) {
+      if (!hotelName) return "Restaurant name is required.";
+      if (!pdfFile) return "Please upload a PDF file.";
+      return null;
+    }
+
+    /**
+     * ============================================
+     * Storage
+     * ============================================
+     */
+    function persistJobData({ jobId, phase1Result, hotelName, menuType }) {
+      localStorage.setItem("job_id", jobId);
+
+      // Keep the same key name so your categories.html keeps working
+      localStorage.setItem("phase1_result", JSON.stringify(phase1Result));
+
+      localStorage.setItem("restaurant_name", hotelName);
+      localStorage.setItem("menu_type", menuType);
+    }
+
+    /**
+     * ============================================
+     * API (UPDATED to new backend route + response)
+     * ============================================
+     */
+    async function extractCategories(formData) {
+      const response = await fetch(`${API_BASE}/api/phase1/extract`, {
+        method: "POST",
+        body: formData,
+      });
+
+      // Better error handling (FastAPI often returns JSON {detail: "..."} for errors)
+      if (!response.ok) {
+        let msg = "Request failed";
+        try {
+          const errJson = await response.json();
+          msg = errJson?.detail || JSON.stringify(errJson);
+        } catch (e) {
+          msg = await response.text();
+        }
+        throw new Error(msg);
+      }
+
+      return response.json(); // expected: { job_id, data }
+    }
+
+    /**
+     * ============================================
+     * Main Handler
+     * ============================================
+     */
+    async function handleStartProcessing() {
+      resetMessages();
+
+      const hotelName = dom.hotelNameInput.value.trim();
+      const menuType = dom.menuTypeSelect.value;
+      const pdfFile = dom.pdfFileInput.files[0];
+
+      const validationError = validateInputs({ hotelName, pdfFile });
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("restaurant_name", hotelName);
+      formData.append("pdf", pdfFile);
+
+      try {
+        const data = await extractCategories(formData);
+
+        // UPDATED: backend returns { job_id, data }
+        persistJobData({
+          jobId: data.job_id,
+          phase1Result: data.data,
+          hotelName,
+          menuType,
+        });
+
+        window.location.href = "categories.html";
+      } catch (err) {
+        setLoading(false);
+        setError("Error: " + err.message);
+      }
+    }
+
+    /**
+     * ============================================
+     * Events
+     * ============================================
+     */
+    dom.startBtn.addEventListener("click", handleStartProcessing);
+  </script>
+</body>
+</html>

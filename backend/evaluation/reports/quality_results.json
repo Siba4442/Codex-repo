@@ -1,0 +1,177 @@
+{
+  "run_name": "amici_eval_run",
+  "items": [
+    {
+      "meta": {
+        "restaurant_name": "Amici",
+        "pdf_filename": "Amici-Dinner-Menu-June-2025.pdf",
+        "ground_truth_version": "v1_doc_level_merged_categories_items_only",
+        "scope": "Merged categories across all pages. Only category names + item names per category. No prices/descriptions/addons.",
+        "notes": "Converted from page-based ground truth to document-level merged format."
+      },
+      "phase1_category_metrics": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "phase2_category_metrics": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.8571428571428571,
+        "f1": 0.923076923076923
+      },
+      "phase2_item_metrics": {
+        "precision": 0.8676470588235294,
+        "recall": 0.7468354430379747,
+        "f1": 0.8027210884353742,
+        "missing_rate": 0.25316455696202533,
+        "hallucination_rate": 0.1323529411764706
+      },
+      "tsr": false,
+      "worst_categories": [
+        {
+          "category": "food to share",
+          "recall": 0.0,
+          "missing_count": 12,
+          "hallucinated_count": 0
+        },
+        {
+          "category": "gourmet pizza",
+          "recall": 0.6190476190476191,
+          "missing_count": 8,
+          "hallucinated_count": 0
+        },
+        {
+          "category": "pasta & risotto",
+          "recall": 1.0,
+          "missing_count": 0,
+          "hallucinated_count": 0
+        },
+        {
+          "category": "sides & extras",
+          "recall": 1.0,
+          "missing_count": 0,
+          "hallucinated_count": 1
+        },
+        {
+          "category": "mains",
+          "recall": 1.0,
+          "missing_count": 0,
+          "hallucinated_count": 0
+        }
+      ],
+      "diffs": {
+        "pasta & risotto": {
+          "tp": 16,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "missing_items": [],
+          "hallucinated_items": []
+        },
+        "sides & extras": {
+          "tp": 7,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.875,
+          "recall": 1.0,
+          "f1": 0.9333333333333333,
+          "missing_items": [],
+          "hallucinated_items": [
+            "gravy"
+          ]
+        },
+        "food to share": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 12,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "missing_items": [
+            "antipasto (for 2-3)",
+            "bruschetta (2)",
+            "cheesy garlic toppa",
+            "chicken wings",
+            "garlic bread (2)",
+            "garlic prawns (9)",
+            "lamb meatballs (2)",
+            "lemon coconut chilli octopus",
+            "marinated olives",
+            "risotto balls (2)",
+            "rocket toppa",
+            "spicy calamari"
+          ],
+          "hallucinated_items": []
+        },
+        "mains": {
+          "tp": 12,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "missing_items": [],
+          "hallucinated_items": []
+        },
+        "salads": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "missing_items": [],
+          "hallucinated_items": []
+        },
+        "gourmet pizza": {
+          "tp": 13,
+          "fp": 0,
+          "fn": 8,
+          "precision": 1.0,
+          "recall": 0.6190476190476191,
+          "f1": 0.7647058823529412,
+          "missing_items": [
+            "americana",
+            "australian",
+            "baked potato",
+            "barbeque",
+            "belvedere",
+            "hawaiian",
+            "mexicana",
+            "mushroom"
+          ],
+          "hallucinated_items": []
+        },
+        "classic pizza": {
+          "tp": 7,
+          "fp": 8,
+          "fn": 0,
+          "precision": 0.4666666666666667,
+          "recall": 1.0,
+          "f1": 0.6363636363636364,
+          "missing_items": [],
+          "hallucinated_items": [
+            "americana",
+            "australian",
+            "baked potato",
+            "barbeque",
+            "belvedere",
+            "hawaiian",
+            "mexicana",
+            "mushroom"
+          ]
+        }
+      },
+      "id": "amici_latest",
+      "job_id": "b7d1af01-a938-436f-a904-83ee14e2f80e"
+    }
+  ]
+}

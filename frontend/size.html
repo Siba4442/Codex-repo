@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Menu Extractor - Assign Sizes</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #ea4e59; 
+      --accent-hover: #d9444f;
+      --bg-light: #f4f7fa;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --field-bg: #f8fafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1600px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      max-height: 90vh;
+    }
+
+    .header-section {
+      padding: 30px 40px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 14px;
+    }
+
+    .brand-logo {
+      height: 50px;
+      width: auto;
+      max-width: 150px;
+      object-fit: contain;
+    }
+
+    h2 { margin: 0; font-size: 22px; }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* LEFT PANEL - ITEMS & CATEGORIES */
+    .left-panel {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-height: 0;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .category-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .category-selector-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--field-bg);
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-dark);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:hover {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(234, 78, 89, 0.1);
+    }
+
+    .items-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .items-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .item-drop-zone {
+      padding: 14px;
+      background: #fff;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: auto;
+    }
+
+    .item-drop-zone:hover {
+      border-color: var(--accent);
+      background: rgba(234, 78, 89, 0.03);
+    }
+
+    .item-drop-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(234, 78, 89, 0.08);
+      box-shadow: inset 0 0 8px rgba(234, 78, 89, 0.15);
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .item-sizes {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .size-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .size-badge-name {
+      flex: 1;
+    }
+
+    .size-badge-price {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .size-badge-price input {
+      width: 50px !important;
+      padding: 2px 4px !important;
+      font-size: 10px !important;
+      height: 20px !important;
+      background: rgba(255,255,255,0.2) !important;
+      border: 1px solid rgba(255,255,255,0.3) !important;
+      color: white !important;
+    }
+
+    .size-badge-price input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .size-remove-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      padding: 0;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .size-remove-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .empty-items {
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* RIGHT PANEL - DRAGGABLE SIZES */
+    .right-panel {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #fafafa;
+      border-left: 1px solid var(--border);
+      min-height: 0;
+    }
+
+    .sizes-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .sizes-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 10px;
+    }
+
+    .apply-all-sizes-btn {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .apply-all-sizes-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .apply-all-sizes-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .sizes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .size-item {
+      padding: 12px 14px;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: move;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .size-item:hover {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .size-item.dragging {
+      opacity: 0.5;
+      border-color: var(--accent);
+    }
+
+    .size-item-name {
+      color: var(--accent);
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .size-item.new-size {
+      background: rgba(234, 78, 89, 0.05);
+      border-color: var(--accent);
+    }
+
+    .size-item-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .apply-all-btn, .delete-size-btn {
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .apply-all-btn {
+      background: var(--accent);
+    }
+
+    .apply-all-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .remove-all-btn {
+      background: #e74c3c;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-all-btn:hover {
+      background: #c0392b;
+    }
+
+    .delete-size-btn {
+      background: #e74c3c;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .delete-size-btn:hover {
+      background: #c0392b;
+    }
+
+    .size-item-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .empty-sizes {
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .add-size-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      background: #fff;
+      border: 2px dashed var(--accent);
+      border-radius: 10px;
+    }
+
+    .add-size-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .add-size-form input {
+      padding: 8px 10px !important;
+      font-size: 13px !important;
+      border: 1px solid var(--border) !important;
+      background: var(--field-bg) !important;
+      border-radius: 6px !important;
+    }
+
+    .add-size-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-size-buttons button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .add-size-buttons .confirm {
+      background: var(--accent);
+      color: white;
+    }
+
+    .add-size-buttons .confirm:hover {
+      background: var(--accent-hover);
+    }
+
+    .add-size-buttons .cancel {
+      background: var(--field-bg);
+      color: var(--text-dark);
+    }
+
+    .btn-add {
+      background: #fef2f2;
+      border: none;
+      color: var(--accent);
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    .btn-add:hover { background: var(--accent); color: white; }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+      padding: 15px 40px;
+      border-top: 1px solid var(--border);
+      background: #fafafa;
+      flex-shrink: 0;
+    }
+
+    button.main {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .primary { background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-hover); }
+    .primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .pink-ghost { background: #fef2f2; color: var(--accent); border: 1px solid var(--accent); }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+
+  <link rel="icon" href="./img/favicon.ico" sizes="any">
+  <script src="./config.js"></script>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header-section">
+      <a
+        href="https://admin.orderart.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="brand"
+        aria-label="Go to OrderArt Admin"
+      >
+        <img
+          src="./img/logo.jpg"
+          alt="OrderArt"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+      </a>
+      <h2>Assign Sizes to Items</h2>
+    </div>
+
+    <div class="main-container">
+      <!-- LEFT PANEL - ITEMS & CATEGORIES -->
+      <div class="left-panel">
+        <div class="category-selector">
+          <div class="category-selector-label">Select Category</div>
+          <select id="category-select">
+            <option value="">Choose a category...</option>
+          </select>
+        </div>
+        
+        <div class="items-section">
+          <div class="items-header">Items in Category</div>
+          <div class="items-container" id="items-container"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL - DRAGGABLE SIZES -->
+      <div class="right-panel">
+        <div class="sizes-section-header">
+          <div class="panel-title">Available Sizes</div>
+          <button class="apply-all-sizes-btn" id="apply-all-sizes-btn" disabled>Apply All Sizes</button>
+        </div>
+        <div class="sizes-section">
+          <div id="sizes-list" class="sizes-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="main pink-ghost" id="backBtn">Back</button>
+      <button class="main primary" id="nextBtn">Extract Bases</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.APP_CONFIG?.API_BASE;
+
+    const dom = {
+      sizesList: document.getElementById("sizes-list"),
+      categorySelect: document.getElementById("category-select"),
+      itemsContainer: document.getElementById("items-container"),
+      nextBtn: document.getElementById("nextBtn"),
+      backBtn: document.getElementById("backBtn"),
+      applyAllSizesBtn: document.getElementById("apply-all-sizes-btn"),
+    };
+
+    const storage = {
+      jobId: localStorage.getItem("job_id"),
+      phase2Result: localStorage.getItem("phase2_result"),
+    };
+
+    if (!storage.jobId) {
+      window.location.href = "./index.html";
+    }
+
+    let isDirty = false;
+    function markDirty() { isDirty = true; }
+
+    let menuData = null;
+    let categoryName = null;
+    let draggedSize = null;
+    let addingSizeInCategory = false;
+    let newSizesByCategory = {}; // Track newly added sizes not yet applied to items
+
+    async function parseError(response) {
+      try {
+        const text = await response.text();
+        try {
+          const j = JSON.parse(text);
+          return typeof j?.detail === "string" ? j.detail : JSON.stringify(j?.detail || j);
+        } catch {
+          return text;
+        }
+      } catch {
+        return "Unknown error occurred";
+      }
+    }
+
+    function escText(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function escAttr(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    // Load phase 2 data
+    function loadPhase2Data() {
+      if (storage.phase2Result) {
+        const parsed = JSON.parse(storage.phase2Result);
+        menuData = parsed?.data ? parsed.data : parsed;
+      }
+      if (!menuData) {
+        window.location.href = "./items.html";
+      }
+    }
+
+    // Extract unique categories
+    function getCategories() {
+      const cats = new Set();
+      (menuData?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          cats.add(cat.name_raw || cat.name);
+        });
+      });
+      return Array.from(cats).sort();
+    }
+
+    // Get items for a category
+    function getItemsByCategory(category) {
+      const items = [];
+      (menuData?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          if (cat.name_raw === category || cat.name === category) {
+            // Try category_items first
+            if (cat.category_items?.length > 0) {
+              cat.category_items.forEach((group) => {
+                (group.items || []).forEach((item) => {
+                  items.push({ item, category: cat.name_raw || cat.name });
+                });
+              });
+            }
+            // Try subcategory_items
+            if (cat.subcategory_items?.length > 0) {
+              cat.subcategory_items.forEach((subcat) => {
+                (subcat.items || []).forEach((item) => {
+                  items.push({ item, category: cat.name_raw || cat.name });
+                });
+              });
+            }
+            // Fallback: direct items array if both above are empty
+            if (items.length === 0 && cat.items?.length > 0) {
+              cat.items.forEach((item) => {
+                items.push({ item, category: cat.name_raw || cat.name });
+              });
+            }
+          }
+        });
+      });
+      return items;
+    }
+
+    // Get unique sizes for category
+    function getSizesForCategory(category) {
+      const sizeMap = {};
+      
+      const items = getItemsByCategory(category);
+      items.forEach(({ item }) => {
+        (item.variations || []).forEach((variation) => {
+          const sizeName = variation.size || variation.name_raw || "Unknown";
+          if (!sizeMap[sizeName]) {
+            sizeMap[sizeName] = {
+              size: sizeName,
+              name_raw: variation.name_raw || sizeName,
+            };
+          }
+        });
+      });
+      
+      return Object.values(sizeMap).sort((a, b) => a.size.localeCompare(b.size));
+    }
+
+    // Get newly added sizes for category (not yet applied to items)
+    function getNewSizes(category) {
+      return newSizesByCategory[category] || [];
+    }
+
+    // Render categories dropdown
+    function renderCategories() {
+      const cats = getCategories();
+      dom.categorySelect.innerHTML = '<option value="">Choose a category...</option>';
+      cats.forEach((cat) => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = escText(cat);
+        dom.categorySelect.appendChild(opt);
+      });
+    }
+
+    // Render draggable sizes
+    function renderSizes() {
+      dom.sizesList.innerHTML = "";
+      
+      if (!categoryName) {
+        const msg = document.createElement("div");
+        msg.className = "empty-sizes";
+        msg.textContent = "Select a category to see sizes";
+        dom.sizesList.appendChild(msg);
+        return;
+      }
+
+      const sizes = getSizesForCategory(categoryName);
+      const newSizes = getNewSizes(categoryName);
+      
+      // Show existing sizes (from items)
+      if (sizes.length > 0) {
+        sizes.forEach((size) => {
+          const sizeEl = document.createElement("div");
+          sizeEl.className = "size-item";
+          sizeEl.draggable = true;
+          
+          const wrapper = document.createElement("div");
+          wrapper.className = "size-item-wrapper";
+          
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "size-item-name";
+          nameSpan.textContent = escText(size.size);
+          wrapper.appendChild(nameSpan);
+          
+          // Add action buttons for existing sizes
+          const actionsDiv = document.createElement("div");
+          actionsDiv.className = "size-item-actions";
+          
+          const applyBtn = document.createElement("button");
+          applyBtn.className = "apply-all-btn";
+          applyBtn.textContent = "Apply All";
+          applyBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemsInCat = getItemsByCategory(categoryName);
+            itemsInCat.forEach(({ item }) => {
+              if (!item.variations) item.variations = [];
+              if (!item.variations.some((v) => (v.size || v.name_raw) === size.size)) {
+                item.variations.push({
+                  size: size.size,
+                  name_raw: size.name_raw,
+                  price: { amount: 0, currency: "USD" }
+                });
+              }
+            });
+            markDirty();
+            renderSizes();
+            renderItems();
+          };
+          actionsDiv.appendChild(applyBtn);
+          
+          const removeAllBtn = document.createElement("button");
+          removeAllBtn.className = "remove-all-btn";
+          removeAllBtn.textContent = "Remove All";
+          removeAllBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemsInCat = getItemsByCategory(categoryName);
+            itemsInCat.forEach(({ item }) => {
+              if (item.variations) {
+                item.variations = item.variations.filter((v) => (v.size || v.name_raw) !== size.size);
+              }
+            });
+            // Move to new sizes list so it stays available
+            if (!newSizesByCategory[categoryName]) {
+              newSizesByCategory[categoryName] = [];
+            }
+            if (!newSizesByCategory[categoryName].some((s) => s.size === size.size)) {
+              newSizesByCategory[categoryName].push({
+                size: size.size,
+                name_raw: size.name_raw,
+              });
+            }
+            markDirty();
+            renderSizes();
+            renderItems();
+          };
+          actionsDiv.appendChild(removeAllBtn);
+          
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-size-btn";
+          deleteBtn.textContent = "×";
+          deleteBtn.type = "button";
+          deleteBtn.title = "Delete size from all items";
+          deleteBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemsInCat = getItemsByCategory(categoryName);
+            itemsInCat.forEach(({ item }) => {
+              if (item.variations) {
+                item.variations = item.variations.filter((v) => (v.size || v.name_raw) !== size.size);
+              }
+            });
+            markDirty();
+            renderSizes();
+            renderItems();
+          };
+          actionsDiv.appendChild(deleteBtn);
+          
+          wrapper.appendChild(actionsDiv);
+          sizeEl.appendChild(wrapper);
+
+          sizeEl.addEventListener("dragstart", (e) => {
+            draggedSize = size;
+            sizeEl.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "copy";
+          });
+
+          sizeEl.addEventListener("dragend", (e) => {
+            sizeEl.classList.remove("dragging");
+            draggedSize = null;
+          });
+
+          dom.sizesList.appendChild(sizeEl);
+        });
+      }
+
+      // Show new sizes (not yet applied to items)
+      if (newSizes.length > 0) {
+        newSizes.forEach((size, idx) => {
+          const sizeEl = document.createElement("div");
+          sizeEl.className = "size-item new-size";
+          sizeEl.draggable = true;
+          
+          const wrapper = document.createElement("div");
+          wrapper.className = "size-item-wrapper";
+          
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "size-item-name";
+          nameSpan.textContent = escText(size.size);
+          wrapper.appendChild(nameSpan);
+          
+          const actionsDiv = document.createElement("div");
+          actionsDiv.className = "size-item-actions";
+          
+          const applyBtn = document.createElement("button");
+          applyBtn.className = "apply-all-btn";
+          applyBtn.textContent = "Apply All";
+          applyBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Apply this size to all items in the category
+            const itemsInCat = getItemsByCategory(categoryName);
+            itemsInCat.forEach(({ item }) => {
+              if (!item.variations) item.variations = [];
+              if (!item.variations.some((v) => (v.size || v.name_raw) === size.size)) {
+                item.variations.push({
+                  size: size.size,
+                  name_raw: size.name_raw,
+                  price: { amount: 0, currency: "USD" }
+                });
+              }
+            });
+            // Remove from new sizes
+            if (!newSizesByCategory[categoryName]) newSizesByCategory[categoryName] = [];
+            newSizesByCategory[categoryName].splice(idx, 1);
+            markDirty();
+            renderSizes();
+            renderItems();
+          };
+          actionsDiv.appendChild(applyBtn);
+          
+          const removeAllBtn = document.createElement("button");
+          removeAllBtn.className = "remove-all-btn";
+          removeAllBtn.textContent = "Remove All";
+          removeAllBtn.title = "Remove this size from all items in category";
+          removeAllBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Remove this size from all items in the category
+            const itemsInCat = getItemsByCategory(categoryName);
+            itemsInCat.forEach(({ item }) => {
+              if (item.variations) {
+                item.variations = item.variations.filter((v) => (v.size || v.name_raw) !== size.size);
+              }
+            });
+            // Do NOT remove from new sizes list - just remove from items
+            markDirty();
+            renderSizes();
+            renderItems();
+          };
+          actionsDiv.appendChild(removeAllBtn);
+          
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-size-btn";
+          deleteBtn.textContent = "×";
+          deleteBtn.type = "button";
+          deleteBtn.title = "Delete size";
+          deleteBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Delete this new size
+            if (!newSizesByCategory[categoryName]) newSizesByCategory[categoryName] = [];
+            newSizesByCategory[categoryName].splice(idx, 1);
+            markDirty();
+            renderSizes();
+          };
+          actionsDiv.appendChild(deleteBtn);
+          
+          wrapper.appendChild(actionsDiv);
+          sizeEl.appendChild(wrapper);
+
+          sizeEl.addEventListener("dragstart", (e) => {
+            draggedSize = size;
+            sizeEl.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "copy";
+          });
+
+          sizeEl.addEventListener("dragend", (e) => {
+            sizeEl.classList.remove("dragging");
+            draggedSize = null;
+          });
+
+          dom.sizesList.appendChild(sizeEl);
+        });
+      }
+
+      // Show message if no sizes at all
+      if (sizes.length === 0 && newSizes.length === 0) {
+        const msg = document.createElement("div");
+        msg.className = "empty-sizes";
+        msg.textContent = "No sizes in this category";
+        dom.sizesList.appendChild(msg);
+      }
+
+      // Add new size form section
+      const addSection = document.createElement("div");
+      addSection.className = "add-size-section";
+      
+      if (!addingSizeInCategory) {
+        const addBtn = document.createElement("button");
+        addBtn.className = "btn-add";
+        addBtn.textContent = "+ Add Size";
+        addBtn.onclick = () => {
+          addingSizeInCategory = true;
+          renderSizes();
+        };
+        addSection.appendChild(addBtn);
+      } else {
+        const form = document.createElement("div");
+        form.className = "add-size-form";
+        
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Size name (e.g., Small, Medium)";
+        input.style.width = "100%";
+        form.appendChild(input);
+        
+        const buttons = document.createElement("div");
+        buttons.className = "add-size-buttons";
+        
+        const confirmBtn = document.createElement("button");
+        confirmBtn.className = "confirm";
+        confirmBtn.textContent = "Add";
+        confirmBtn.onclick = () => {
+          const sizeName = input.value.trim();
+          if (sizeName) {
+            // Initialize category in newSizesByCategory if needed
+            if (!newSizesByCategory[categoryName]) {
+              newSizesByCategory[categoryName] = [];
+            }
+            // Check if already exists
+            const exists = newSizesByCategory[categoryName].some((s) => s.size === sizeName) ||
+                          getSizesForCategory(categoryName).some((s) => s.size === sizeName);
+            if (!exists) {
+              newSizesByCategory[categoryName].push({
+                size: sizeName,
+                name_raw: sizeName,
+              });
+              markDirty();
+            }
+            addingSizeInCategory = false;
+            renderSizes();
+          }
+        };
+        buttons.appendChild(confirmBtn);
+        
+        const cancelBtn = document.createElement("button");
+        cancelBtn.className = "cancel";
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.onclick = () => {
+          addingSizeInCategory = false;
+          renderSizes();
+        };
+        buttons.appendChild(cancelBtn);
+        
+        form.appendChild(buttons);
+        addSection.appendChild(form);
+        
+        setTimeout(() => input.focus(), 0);
+      }
+      
+      dom.sizesList.appendChild(addSection);
+      
+      // Enable/disable Apply All Sizes button based on whether there are any sizes (existing or new) and items
+      const hasSizes = sizes.length > 0;
+      const hasNewSizes = newSizes.length > 0;
+      const hasItems = getItemsByCategory(categoryName).length > 0;
+      dom.applyAllSizesBtn.disabled = !(hasSizes || hasNewSizes) || !categoryName || !hasItems;
+    }
+
+    // Render items for selected category
+    function renderItems() {
+      dom.itemsContainer.innerHTML = "";
+      
+      if (!categoryName) {
+        const msg = document.createElement("div");
+        msg.className = "empty-items";
+        msg.textContent = "Select a category to see items";
+        dom.itemsContainer.appendChild(msg);
+        return;
+      }
+
+      const items = getItemsByCategory(categoryName);
+
+      if (items.length === 0) {
+        const msg = document.createElement("div");
+        msg.className = "empty-items";
+        msg.textContent = "No items in this category";
+        dom.itemsContainer.appendChild(msg);
+        return;
+      }
+
+      items.forEach(({ item, category }) => {
+        const dropZone = document.createElement("div");
+        dropZone.className = "item-drop-zone";
+        dropZone.dataset.itemName = escAttr(item.name_raw || "");
+
+        const itemInfo = document.createElement("div");
+        itemInfo.className = "item-info";
+
+        const itemName = document.createElement("div");
+        itemName.className = "item-name";
+        itemName.textContent = escText(item.name_raw || "Item");
+        itemInfo.appendChild(itemName);
+
+        // Show current sizes with editable prices
+        if (item.variations && item.variations.length > 0) {
+          const sizeList = document.createElement("div");
+          sizeList.className = "item-sizes";
+          
+          item.variations.forEach((variation) => {
+            const sizeName = variation.size || variation.name_raw || "Unknown";
+            const badge = document.createElement("div");
+            badge.className = "size-badge";
+            
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "size-badge-name";
+            nameSpan.textContent = escText(sizeName);
+            badge.appendChild(nameSpan);
+            
+            // Price input
+            const priceDiv = document.createElement("div");
+            priceDiv.className = "size-badge-price";
+            
+            const priceInput = document.createElement("input");
+            priceInput.type = "number";
+            priceInput.placeholder = "0";
+            priceInput.step = "0.01";
+            priceInput.min = "0";
+            priceInput.value = variation.price?.amount || "";
+            priceInput.onchange = (e) => {
+              variation.price = {
+                amount: parseFloat(e.target.value) || 0,
+                currency: "USD"
+              };
+              markDirty();
+            };
+            priceDiv.appendChild(priceInput);
+            
+            // Remove button
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "size-remove-btn";
+            removeBtn.textContent = "×";
+            removeBtn.type = "button";
+            removeBtn.onclick = (e) => {
+              e.stopPropagation();
+              // Remove this size from this item
+              item.variations = (item.variations || []).filter((v) => (v.size || v.name_raw) !== sizeName);
+              markDirty();
+              renderItems();
+            };
+            priceDiv.appendChild(removeBtn);
+            badge.appendChild(priceDiv);
+            
+            sizeList.appendChild(badge);
+          });
+          
+          itemInfo.appendChild(sizeList);
+        }
+
+        dropZone.appendChild(itemInfo);
+
+        // Drag and drop events
+        dropZone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "copy";
+          dropZone.classList.add("drag-over");
+        });
+
+        dropZone.addEventListener("dragleave", (e) => {
+          if (e.target === dropZone || e.currentTarget === dropZone) {
+            dropZone.classList.remove("drag-over");
+          }
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("drag-over");
+          
+          if (draggedSize) {
+            // Add size to item
+            if (!item.variations) {
+              item.variations = [];
+            }
+            
+            // Check if size already exists
+            const exists = item.variations.some((v) => (v.size || v.name_raw) === draggedSize.size);
+            if (!exists) {
+              item.variations.push({
+                size: draggedSize.size,
+                name_raw: draggedSize.name_raw,
+                price: { amount: 0, currency: "USD" }
+              });
+              markDirty();
+              renderItems();
+            }
+          }
+        });
+
+        dom.itemsContainer.appendChild(dropZone);
+      });
+    }
+
+    // Handle category selection
+    dom.categorySelect.addEventListener("change", (e) => {
+      categoryName = e.target.value || null;
+      addingSizeInCategory = false;
+      renderSizes();
+      renderItems();
+    });
+
+    // Handle Apply All Sizes button
+    dom.applyAllSizesBtn.addEventListener("click", () => {
+      if (!categoryName) return;
+      
+      const sizes = getSizesForCategory(categoryName);
+      const newSizes = getNewSizes(categoryName);
+      const items = getItemsByCategory(categoryName);
+      
+      // Combine existing and new sizes
+      const allSizes = [...sizes];
+      newSizes.forEach((newSize) => {
+        if (!allSizes.some((s) => s.size === newSize.size)) {
+          allSizes.push(newSize);
+        }
+      });
+      
+      // Apply all sizes to all items
+      items.forEach(({ item }) => {
+        if (!item.variations) item.variations = [];
+        allSizes.forEach((size) => {
+          // Check if this size already exists for this item
+          if (!item.variations.some((v) => (v.size || v.name_raw) === size.size)) {
+            item.variations.push({
+              size: size.size,
+              name_raw: size.name_raw,
+              price: { amount: 0, currency: "USD" }
+            });
+          }
+        });
+      });
+      
+      // Clear new sizes since they've been applied
+      newSizesByCategory[categoryName] = [];
+      
+      markDirty();
+      renderSizes();
+      renderItems();
+    });
+
+    // Handle back button
+    dom.backBtn.addEventListener("click", () => {
+      window.location.href = "./items.html";
+    });
+
+    // Handle next button
+    dom.nextBtn.addEventListener("click", async () => {
+      dom.nextBtn.disabled = true;
+      dom.nextBtn.textContent = "Saving...";
+
+      try {
+        if (isDirty) {
+          // Save phase 2 changes
+          const response = await fetch(`${API_BASE}/api/phase2/${encodeURIComponent(storage.jobId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              job_id: storage.jobId,
+              data: menuData,
+            }),
+          });
+
+          if (!response.ok) throw new Error(await parseError(response));
+          isDirty = false;
+        }
+
+        // Extract bases for phase 3
+        const response = await fetch(
+          `${API_BASE}/api/phase3/extract?job_id=${encodeURIComponent(storage.jobId)}`,
+          { method: "POST" }
+        );
+
+        if (!response.ok) throw new Error(await parseError(response));
+        const phase3Data = await response.json();
+        localStorage.setItem("phase3_result", JSON.stringify(phase3Data.data || phase3Data));
+
+        window.location.href = "bases.html";
+      } catch (err) {
+        alert("Save failed: " + (err?.message || JSON.stringify(err)));
+        console.error(err);
+        dom.nextBtn.disabled = false;
+        dom.nextBtn.textContent = "Extract Bases";
+      }
+    });
+
+    // Initialize
+    (function init() {
+      loadPhase2Data();
+      renderCategories();
+      renderSizes();
+      renderItems();
+    })();
+  </script>
+</body>
+</html>

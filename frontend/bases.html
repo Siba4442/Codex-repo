@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Menu Extractor - Assign Bases</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #ea4e59; 
+      --accent-hover: #d9444f;
+      --bg-light: #f4f7fa;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --field-bg: #f8fafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1600px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      max-height: 90vh;
+    }
+
+    .header-section {
+      padding: 30px 40px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 14px;
+    }
+
+    .brand-logo {
+      height: 50px;
+      width: auto;
+      max-width: 150px;
+      object-fit: contain;
+    }
+
+    h2 { margin: 0; font-size: 22px; }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* LEFT PANEL - ITEMS & CATEGORIES */
+    .left-panel {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-height: 0;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .category-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .category-selector-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--field-bg);
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-dark);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:hover {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(234, 78, 89, 0.1);
+    }
+
+    .items-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .items-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .item-drop-zone {
+      padding: 14px;
+      background: #fff;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: auto;
+    }
+
+    .item-drop-zone:hover {
+      border-color: var(--accent);
+      background: rgba(234, 78, 89, 0.03);
+    }
+
+    .item-drop-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(234, 78, 89, 0.08);
+      box-shadow: inset 0 0 8px rgba(234, 78, 89, 0.15);
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .item-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .item-bases {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .base-entry {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--field-bg);
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .base-entry-name {
+      font-weight: 600;
+      color: var(--accent);
+      flex: 1;
+    }
+
+    .size-price-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .size-price-input {
+      width: 45px !important;
+      padding: 2px 4px !important;
+      font-size: 10px !important;
+      height: 18px !important;
+      background: #fff !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-dark) !important;
+    }
+
+    .base-remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .base-remove-btn:hover {
+      color: #e74c3c;
+    }
+
+    .empty-items {
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* RIGHT PANEL - DRAGGABLE BASES */
+    .right-panel {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #fafafa;
+      border-left: 1px solid var(--border);
+      min-height: 0;
+    }
+
+    .bases-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .bases-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 10px;
+    }
+
+    .apply-all-bases-btn {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .apply-all-bases-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .apply-all-bases-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .bases-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .base-item {
+      padding: 12px 14px;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: move;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .base-item:hover {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .base-item.dragging {
+      opacity: 0.5;
+      border-color: var(--accent);
+    }
+
+    .base-item-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .base-item-name {
+      color: var(--accent);
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .delete-base-btn {
+      background: #e74c3c;
+      border: none;
+      color: white;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .delete-base-btn:hover {
+      background: #c0392b;
+    }
+
+    .base-item-price {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .base-item-price label {
+      font-weight: 700;
+    }
+
+    .base-item-price input {
+      width: 70px !important;
+      padding: 4px 6px !important;
+      font-size: 11px !important;
+      height: 26px !important;
+      background: var(--field-bg) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-dark) !important;
+      border-radius: 4px !important;
+    }
+
+    .empty-bases {
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .add-base-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      background: #fff;
+      border: 2px dashed var(--accent);
+      border-radius: 10px;
+    }
+
+    .add-base-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .add-base-form input {
+      padding: 8px 10px !important;
+      font-size: 13px !important;
+      border: 1px solid var(--border) !important;
+      background: var(--field-bg) !important;
+      border-radius: 6px !important;
+    }
+
+    .add-base-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-base-buttons button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .add-base-buttons .confirm {
+      background: var(--accent);
+      color: white;
+    }
+
+    .add-base-buttons .confirm:hover {
+      background: var(--accent-hover);
+    }
+
+    .add-base-buttons .cancel {
+      background: var(--field-bg);
+      color: var(--text-dark);
+    }
+
+    .btn-add {
+      background: #fef2f2;
+      border: none;
+      color: var(--accent);
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    .btn-add:hover { background: var(--accent); color: white; }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+      padding: 15px 40px;
+      border-top: 1px solid var(--border);
+      background: #fafafa;
+      flex-shrink: 0;
+    }
+
+    button.main {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .primary { background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-hover); }
+    .primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .pink-ghost { background: #fef2f2; color: var(--accent); border: 1px solid var(--accent); }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+
+  <link rel="icon" href="./img/favicon.ico" sizes="any">
+  <script src="./config.js"></script>
+</head>
+
+<body>
+  <div class="card">
+    <div class="header-section">
+      <a
+        href="https://admin.orderart.com.au/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="brand"
+        aria-label="Go to OrderArt Admin"
+      >
+        <img
+          src="./img/logo.jpg"
+          alt="OrderArt"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+      </a>
+      <h2>Assign Bases to Items</h2>
+    </div>
+
+    <div class="main-container">
+      <!-- LEFT PANEL - ITEMS & CATEGORIES -->
+      <div class="left-panel">
+        <div class="category-selector">
+          <div class="category-selector-label">Select Category</div>
+          <select id="category-select">
+            <option value="">Choose a category...</option>
+          </select>
+        </div>
+        
+        <div class="items-section">
+          <div class="items-header">Items in Category</div>
+          <div class="items-container" id="items-container"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL - DRAGGABLE BASES -->
+      <div class="right-panel">
+        <div class="bases-section-header">
+          <div class="panel-title">Available Bases</div>
+          <button class="apply-all-bases-btn" id="apply-all-bases-btn" disabled>Apply All Bases</button>
+        </div>
+        <div class="bases-section">
+          <div id="bases-list" class="bases-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="main pink-ghost" id="backBtn">Back</button>
+      <button class="main primary" id="nextBtn">Extract Addons</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.APP_CONFIG?.API_BASE;
+
+    const dom = {
+      basesList: document.getElementById("bases-list"),
+      categorySelect: document.getElementById("category-select"),
+      itemsContainer: document.getElementById("items-container"),
+      nextBtn: document.getElementById("nextBtn"),
+      backBtn: document.getElementById("backBtn"),
+      applyAllBasesBtn: document.getElementById("apply-all-bases-btn"),
+    };
+
+    const storage = {
+      jobId: localStorage.getItem("job_id"),
+      phase2Result: localStorage.getItem("phase2_result"),
+      phase3Result: localStorage.getItem("phase3_result"),
+    };
+
+    if (!storage.jobId) {
+      window.location.href = "./index.html";
+    }
+
+    let isDirty = false;
+    function markDirty() { isDirty = true; }
+
+    let menuDataPhase2 = null; // Items from phase 2
+    let menuDataPhase3 = null; // Bases from phase 3
+    let menuData = null; // Merged data for rendering
+    let categoryName = null;
+    let draggedBase = null;
+    let addingBaseInCategory = false;
+    let newBasesByCategory = {};
+    let expandedItems = {};
+
+    async function parseError(response) {
+      try {
+        const text = await response.text();
+        try {
+          const j = JSON.parse(text);
+          return typeof j?.detail === "string" ? j.detail : JSON.stringify(j?.detail || j);
+        } catch {
+          return text;
+        }
+      } catch {
+        return "Unknown error occurred";
+      }
+    }
+
+    function escText(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function escAttr(v) {
+      return String(v ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function loadPhase3Data() {
+      // Load Phase 2 data (items)
+      if (storage.phase2Result) {
+        const parsed = JSON.parse(storage.phase2Result);
+        menuDataPhase2 = parsed?.data ? parsed.data : parsed;
+      }
+      
+      // Load Phase 3 data (bases)
+      if (storage.phase3Result) {
+        const parsed = JSON.parse(storage.phase3Result);
+        menuDataPhase3 = parsed?.data ? parsed.data : parsed;
+      }
+      
+      // Use Phase 2 as main data (has items), will merge bases from Phase 3
+      menuData = menuDataPhase2;
+      
+      if (!menuData) {
+        console.error("No phase2 data found in localStorage. Redirecting to size.html");
+        window.location.href = "./size.html";
+      }
+      console.log("Phase 2 Data Loaded (items):", menuDataPhase2);
+      console.log("Phase 3 Data Loaded (bases):", menuDataPhase3);
+      console.log("Merged menuData for rendering:", menuData);
+    }
+
+    function getCategories() {
+      const cats = new Set();
+      (menuData?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          cats.add(cat.name_raw || cat.name);
+        });
+      });
+      return Array.from(cats).sort();
+    }
+
+    function getItemsByCategory(category) {
+      const items = [];
+      (menuData?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          if (cat.name_raw === category || cat.name === category) {
+            // Try category_items first
+            if (cat.category_items?.length > 0) {
+              cat.category_items.forEach((group) => {
+                (group.items || []).forEach((item) => {
+                  items.push({ item, category: cat.name_raw || cat.name });
+                });
+              });
+            }
+            // Try subcategory_items
+            if (cat.subcategory_items?.length > 0) {
+              cat.subcategory_items.forEach((subcat) => {
+                (subcat.items || []).forEach((item) => {
+                  items.push({ item, category: cat.name_raw || cat.name });
+                });
+              });
+            }
+            // Fallback: direct items array if both above are empty
+            if (items.length === 0 && cat.items?.length > 0) {
+              cat.items.forEach((item) => {
+                items.push({ item, category: cat.name_raw || cat.name });
+              });
+            }
+          }
+        });
+      });
+      return items;
+    }
+
+    function getBasesForCategory(category) {
+      const baseMap = {};
+      // Get bases from Phase 3 data
+      (menuDataPhase3?.pages || []).forEach((page) => {
+        (page?.categories || []).forEach((cat) => {
+          if (cat.name_raw === category || cat.name === category) {
+            // Get base_options from phase 3
+            (cat.base_options || []).forEach((base) => {
+              const baseName = base.name_raw || "Unknown";
+              if (!baseMap[baseName]) {
+                baseMap[baseName] = {
+                  name_raw: baseName,
+                  price: base.price || { amount: 0, currency: "USD" },
+                  default: base.default || false,
+                };
+              }
+            });
+            // Also get subcategories_base as bases
+            (cat.subcategories_base || []).forEach((base) => {
+              const baseName = base.name_raw || "Unknown";
+              if (!baseMap[baseName]) {
+                baseMap[baseName] = {
+                  name_raw: baseName,
+                  price: base.price || { amount: 0, currency: "USD" },
+                  default: base.default || false,
+                };
+              }
+            });
+          }
+        });
+      });
+      return Object.values(baseMap).sort((a, b) => a.name_raw.localeCompare(b.name_raw));
+    }
+
+    function getNewBases(category) {
+      return newBasesByCategory[category] || [];
+    }
+
+    function renderCategories() {
+      const cats = getCategories();
+      dom.categorySelect.innerHTML = '<option value="">Choose a category...</option>';
+      cats.forEach((cat) => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = escText(cat);
+        dom.categorySelect.appendChild(opt);
+      });
+    }
+
+    function renderBases() {
+      dom.basesList.innerHTML = "";
+      
+      if (!categoryName) {
+        const msg = document.createElement("div");
+        msg.className = "empty-bases";
+        msg.textContent = "Select a category to see bases";
+        dom.basesList.appendChild(msg);
+        return;
+      }
+
+      const bases = getBasesForCategory(categoryName);
+      const newBases = getNewBases(categoryName);
+      
+      // Show existing bases
+      if (bases.length > 0) {
+        bases.forEach((base) => {
+          const baseEl = document.createElement("div");
+          baseEl.className = "base-item";
+          baseEl.draggable = true;
+          
+          const header = document.createElement("div");
+          header.className = "base-item-header";
+          
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "base-item-name";
+          nameSpan.textContent = escText(base.name_raw);
+          header.appendChild(nameSpan);
+          
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-base-btn";
+          deleteBtn.textContent = "×";
+          deleteBtn.type = "button";
+          deleteBtn.title = "Delete base";
+          deleteBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const items = getItemsByCategory(categoryName);
+            items.forEach(({ item }) => {
+              if (item.base_options) {
+                item.base_options = item.base_options.filter((b) => (b.name_raw) !== base.name_raw);
+              }
+            });
+            markDirty();
+            renderBases();
+            renderItems();
+          };
+          header.appendChild(deleteBtn);
+          
+          baseEl.appendChild(header);
+          
+          // Price input
+          const priceDiv = document.createElement("div");
+          priceDiv.className = "base-item-price";
+          priceDiv.innerHTML = `
+            <label>Default Price:</label>
+            <input
+              type="number"
+              placeholder="0"
+              step="0.01"
+              min="0"
+              value="${base.price?.amount || 0}"
+              onchange="actions.updateBasePrice('${escAttr(base.name_raw)}', this.value)"
+            />
+          `;
+          baseEl.appendChild(priceDiv);
+
+          baseEl.addEventListener("dragstart", (e) => {
+            draggedBase = base;
+            baseEl.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "copy";
+          });
+
+          baseEl.addEventListener("dragend", (e) => {
+            baseEl.classList.remove("dragging");
+            draggedBase = null;
+          });
+
+          dom.basesList.appendChild(baseEl);
+        });
+      }
+
+      // Show new bases
+      if (newBases.length > 0) {
+        newBases.forEach((base, idx) => {
+          const baseEl = document.createElement("div");
+          baseEl.className = "base-item";
+          baseEl.draggable = true;
+          
+          const header = document.createElement("div");
+          header.className = "base-item-header";
+          
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "base-item-name";
+          nameSpan.textContent = escText(base.name_raw);
+          header.appendChild(nameSpan);
+          
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "delete-base-btn";
+          deleteBtn.textContent = "×";
+          deleteBtn.type = "button";
+          deleteBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!newBasesByCategory[categoryName]) newBasesByCategory[categoryName] = [];
+            newBasesByCategory[categoryName].splice(idx, 1);
+            markDirty();
+            renderBases();
+          };
+          header.appendChild(deleteBtn);
+          
+          baseEl.appendChild(header);
+          
+          const priceDiv = document.createElement("div");
+          priceDiv.className = "base-item-price";
+          priceDiv.innerHTML = `
+            <label>Default Price:</label>
+            <input
+              type="number"
+              placeholder="0"
+              step="0.01"
+              min="0"
+              value="${base.price?.amount || 0}"
+              onchange="actions.updateNewBasePrice(${idx}, this.value)"
+            />
+          `;
+          baseEl.appendChild(priceDiv);
+
+          baseEl.addEventListener("dragstart", (e) => {
+            draggedBase = base;
+            baseEl.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "copy";
+          });
+
+          baseEl.addEventListener("dragend", (e) => {
+            baseEl.classList.remove("dragging");
+            draggedBase = null;
+          });
+
+          dom.basesList.appendChild(baseEl);
+        });
+      }
+
+      if (bases.length === 0 && newBases.length === 0) {
+        const msg = document.createElement("div");
+        msg.className = "empty-bases";
+        msg.textContent = "No bases in this category";
+        dom.basesList.appendChild(msg);
+      }
+
+      // Add new base section
+      const addSection = document.createElement("div");
+      addSection.className = "add-base-section";
+      
+      if (!addingBaseInCategory) {
+        const addBtn = document.createElement("button");
+        addBtn.className = "btn-add";
+        addBtn.textContent = "+ Add Base";
+        addBtn.onclick = () => {
+          addingBaseInCategory = true;
+          renderBases();
+        };
+        addSection.appendChild(addBtn);
+      } else {
+        const form = document.createElement("div");
+        form.className = "add-base-form";
+        
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Base name";
+        input.style.width = "100%";
+        form.appendChild(input);
+        
+        const buttons = document.createElement("div");
+        buttons.className = "add-base-buttons";
+        
+        const confirmBtn = document.createElement("button");
+        confirmBtn.className = "confirm";
+        confirmBtn.textContent = "Add";
+        confirmBtn.onclick = () => {
+          const baseName = input.value.trim();
+          if (baseName) {
+            if (!newBasesByCategory[categoryName]) {
+              newBasesByCategory[categoryName] = [];
+            }
+            const exists = newBasesByCategory[categoryName].some((b) => b.name_raw === baseName) ||
+                          getBasesForCategory(categoryName).some((b) => b.name_raw === baseName);
+            if (!exists) {
+              newBasesByCategory[categoryName].push({
+                name_raw: baseName,
+                price: { amount: 0, currency: "USD" },
+                default: false,
+              });
+              markDirty();
+            }
+            addingBaseInCategory = false;
+            renderBases();
+          }
+        };
+        buttons.appendChild(confirmBtn);
+        
+        const cancelBtn = document.createElement("button");
+        cancelBtn.className = "cancel";
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.onclick = () => {
+          addingBaseInCategory = false;
+          renderBases();
+        };
+        buttons.appendChild(cancelBtn);
+        
+        form.appendChild(buttons);
+        addSection.appendChild(form);
+        
+        setTimeout(() => input.focus(), 0);
+      }
+      
+      dom.basesList.appendChild(addSection);
+      
+      const hasBases = bases.length > 0;
+      const hasNewBases = newBases.length > 0;
+      const hasItems = getItemsByCategory(categoryName).length > 0;
+      dom.applyAllBasesBtn.disabled = !(hasBases || hasNewBases) || !categoryName || !hasItems;
+    }
+
+    function toggleItem(itemName) {
+      if (expandedItems[itemName]) {
+        delete expandedItems[itemName];
+      } else {
+        expandedItems[itemName] = true;
+      }
+      renderItems();
+    }
+
+    function renderItems() {
+      dom.itemsContainer.innerHTML = "";
+      
+      if (!categoryName) {
+        const msg = document.createElement("div");
+        msg.className = "empty-items";
+        msg.textContent = "Select a category to see items";
+        dom.itemsContainer.appendChild(msg);
+        return;
+      }
+
+      const items = getItemsByCategory(categoryName);
+
+      if (items.length === 0) {
+        const msg = document.createElement("div");
+        msg.className = "empty-items";
+        msg.textContent = "No items in this category";
+        dom.itemsContainer.appendChild(msg);
+        return;
+      }
+
+      items.forEach(({ item, category }) => {
+        const dropZone = document.createElement("div");
+        dropZone.className = "item-drop-zone";
+        dropZone.dataset.itemName = escAttr(item.name_raw || "");
+
+        const itemInfo = document.createElement("div");
+        itemInfo.className = "item-info";
+
+        const itemNameDiv = document.createElement("div");
+        itemNameDiv.className = "item-name";
+        itemNameDiv.onclick = () => toggleItem(item.name_raw);
+        
+        const toggle = document.createElement("span");
+        toggle.className = "item-toggle";
+        toggle.textContent = expandedItems[item.name_raw] ? "−" : "+";
+        itemNameDiv.appendChild(toggle);
+        
+        const nameText = document.createElement("span");
+        nameText.textContent = escText(item.name_raw || "Item");
+        itemNameDiv.appendChild(nameText);
+        
+        itemInfo.appendChild(itemNameDiv);
+
+        if (expandedItems[item.name_raw] && item.base_options && item.base_options.length > 0) {
+          const basesList = document.createElement("div");
+          basesList.className = "item-bases";
+          
+          item.base_options.forEach((baseOption) => {
+            const baseName = baseOption.name_raw || "Unknown";
+            const baseEntry = document.createElement("div");
+            baseEntry.className = "base-entry";
+            
+            const baseName_span = document.createElement("span");
+            baseName_span.className = "base-entry-name";
+            baseName_span.textContent = escText(baseName);
+            baseEntry.appendChild(baseName_span);
+            
+            // Show prices for each size
+            if (item.variations && item.variations.length > 0) {
+              const pricesDiv = document.createElement("div");
+              pricesDiv.style.display = "flex";
+              pricesDiv.style.flexDirection = "column";
+              pricesDiv.style.gap = "4px";
+              pricesDiv.style.flex = "1";
+              
+              item.variations.forEach((variation, vIdx) => {
+                const sizeName = variation.size || variation.name_raw || "Unknown";
+                const basePrice = baseOption.price?.amount || 0;
+                
+                const row = document.createElement("div");
+                row.className = "size-price-row";
+                row.innerHTML = `
+                  <span>${escText(sizeName)}:</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="0"
+                    value="${basePrice}"
+                    class="size-price-input"
+                    onchange="actions.updateItemBasePrice('${escAttr(item.name_raw)}', '${escAttr(baseName)}', ${vIdx}, this.value)"
+                  />
+                `;
+                pricesDiv.appendChild(row);
+              });
+              baseEntry.appendChild(pricesDiv);
+            }
+            
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "base-remove-btn";
+            removeBtn.textContent = "×";
+            removeBtn.type = "button";
+            removeBtn.onclick = (e) => {
+              e.stopPropagation();
+              item.base_options = (item.base_options || []).filter((b) => b.name_raw !== baseName);
+              markDirty();
+              renderItems();
+            };
+            baseEntry.appendChild(removeBtn);
+            
+            basesList.appendChild(baseEntry);
+          });
+          
+          itemInfo.appendChild(basesList);
+        }
+
+        dropZone.appendChild(itemInfo);
+
+        dropZone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "copy";
+          dropZone.classList.add("drag-over");
+        });
+
+        dropZone.addEventListener("dragleave", (e) => {
+          if (e.target === dropZone || e.currentTarget === dropZone) {
+            dropZone.classList.remove("drag-over");
+          }
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("drag-over");
+          
+          if (draggedBase) {
+            const allItems = getItemsByCategory(categoryName);
+            allItems.forEach(({ item: i }) => {
+              if (!i.base_options) i.base_options = [];
+              if (!i.base_options.some((b) => b.name_raw === draggedBase.name_raw)) {
+                i.base_options.push({
+                  name_raw: draggedBase.name_raw,
+                  price: draggedBase.price || { amount: 0, currency: "USD" },
+                  default: draggedBase.default || false,
+                });
+              }
+            });
+            markDirty();
+            renderItems();
+          }
+        });
+
+        dom.itemsContainer.appendChild(dropZone);
+      });
+    }
+
+    dom.categorySelect.addEventListener("change", (e) => {
+      categoryName = e.target.value || null;
+      addingBaseInCategory = false;
+      expandedItems = {};
+      renderBases();
+      renderItems();
+    });
+
+    dom.applyAllBasesBtn.addEventListener("click", () => {
+      if (!categoryName) return;
+      
+      const bases = getBasesForCategory(categoryName);
+      const newBases = getNewBases(categoryName);
+      const items = getItemsByCategory(categoryName);
+      
+      const allBases = [...bases];
+      newBases.forEach((newBase) => {
+        if (!allBases.some((b) => b.name_raw === newBase.name_raw)) {
+          allBases.push(newBase);
+        }
+      });
+      
+      items.forEach(({ item }) => {
+        if (!item.base_options) item.base_options = [];
+        allBases.forEach((base) => {
+          if (!item.base_options.some((b) => b.name_raw === base.name_raw)) {
+            item.base_options.push({
+              name_raw: base.name_raw,
+              price: base.price || { amount: 0, currency: "USD" },
+              default: base.default || false,
+            });
+          }
+        });
+      });
+      
+      newBasesByCategory[categoryName] = [];
+      
+      markDirty();
+      renderBases();
+      renderItems();
+    });
+
+    dom.backBtn.addEventListener("click", () => {
+      window.location.href = "./size.html";
+    });
+
+    dom.nextBtn.addEventListener("click", async () => {
+      dom.nextBtn.disabled = true;
+      dom.nextBtn.textContent = "Saving...";
+
+      try {
+        if (isDirty) {
+          const response = await fetch(`${API_BASE}/api/phase3/${encodeURIComponent(storage.jobId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              job_id: storage.jobId,
+              data: menuData,
+            }),
+          });
+
+          if (!response.ok) throw new Error(await parseError(response));
+          isDirty = false;
+        }
+
+        const response = await fetch(
+          `${API_BASE}/api/phase4/extract?job_id=${encodeURIComponent(storage.jobId)}`,
+          { method: "POST" }
+        );
+
+        if (!response.ok) throw new Error(await parseError(response));
+        const phase4Data = await response.json();
+        localStorage.setItem("phase4_result", JSON.stringify(phase4Data.data || phase4Data));
+
+        window.location.href = "addons.html";
+      } catch (err) {
+        alert("Save failed: " + (err?.message || JSON.stringify(err)));
+        console.error(err);
+        dom.nextBtn.disabled = false;
+        dom.nextBtn.textContent = "Extract Addons";
+      }
+    });
+
+    const actions = {
+      updateBasePrice(baseName, value) {
+        (menuData?.pages || []).forEach((page) => {
+          (page?.categories || []).forEach((cat) => {
+            if (cat.name_raw === categoryName || cat.name === categoryName) {
+              (cat.base_options || []).forEach((base) => {
+                if (base.name_raw === baseName) {
+                  if (!base.price) base.price = { amount: 0, currency: "USD" };
+                  base.price.amount = parseFloat(value) || 0;
+                }
+              });
+            }
+          });
+        });
+        markDirty();
+      },
+
+      updateNewBasePrice(idx, value) {
+        if (newBasesByCategory[categoryName]) {
+          if (!newBasesByCategory[categoryName][idx].price) {
+            newBasesByCategory[categoryName][idx].price = { amount: 0, currency: "USD" };
+          }
+          newBasesByCategory[categoryName][idx].price.amount = parseFloat(value) || 0;
+        }
+        markDirty();
+      },
+
+      updateItemBasePrice(itemName, baseName, sizeIdx, value) {
+        const items = getItemsByCategory(categoryName);
+        items.forEach(({ item }) => {
+          if (item.name_raw === itemName) {
+            const baseOption = (item.base_options || []).find((b) => b.name_raw === baseName);
+            if (baseOption) {
+              if (!baseOption.price) baseOption.price = { amount: 0, currency: "USD" };
+              baseOption.price.amount = parseFloat(value) || 0;
+            }
+          }
+        });
+        markDirty();
+      },
+    };
+
+    window.actions = actions;
+
+    (function init() {
+      loadPhase3Data();
+      renderCategories();
+      renderBases();
+      renderItems();
+    })();
+  </script>
+</body>
+</html>
