@@ -26,6 +26,7 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-light);
       color: var(--text-dark);
+      font-size: 16px;
       padding: 20px;
       display: flex;
       justify-content: center;
@@ -91,7 +92,7 @@
     }
 
     .panel-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--accent);
       margin-bottom: 10px;
@@ -106,7 +107,7 @@
     }
 
     .category-selector-label {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
@@ -119,7 +120,7 @@
       border-radius: 10px;
       background: var(--field-bg);
       font-family: inherit;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-dark);
       cursor: pointer;
       outline: none;
@@ -145,7 +146,7 @@
     }
 
     .items-header {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
@@ -191,14 +192,14 @@
     }
 
     .item-name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       margin-bottom: 8px;
     }
 
     .item-sizes {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
@@ -213,7 +214,7 @@
       color: white;
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
     }
 
@@ -230,7 +231,7 @@
     .size-badge-price input {
       width: 50px !important;
       padding: 2px 4px !important;
-      font-size: 10px !important;
+      font-size: 12px !important;
       height: 20px !important;
       background: rgba(255,255,255,0.2) !important;
       border: 1px solid rgba(255,255,255,0.3) !important;
@@ -266,7 +267,7 @@
       padding: 30px 20px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     /* RIGHT PANEL - DRAGGABLE SIZES */
@@ -304,7 +305,7 @@
       color: white;
       padding: 6px 12px;
       border-radius: 6px;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
@@ -336,7 +337,7 @@
       border: 2px solid var(--border);
       border-radius: 10px;
       cursor: move;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text-dark);
       transition: all 0.2s ease;
@@ -379,7 +380,7 @@
       color: white;
       padding: 5px 10px;
       border-radius: 5px;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
@@ -403,7 +404,7 @@
       color: white;
       padding: 5px 10px;
       border-radius: 5px;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
@@ -440,7 +441,7 @@
       padding: 20px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .add-size-section {
@@ -461,7 +462,7 @@
 
     .add-size-form input {
       padding: 8px 10px !important;
-      font-size: 13px !important;
+      font-size: 14px !important;
       border: 1px solid var(--border) !important;
       background: var(--field-bg) !important;
       border-radius: 6px !important;
@@ -478,7 +479,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       transition: 0.2s;
     }
@@ -505,7 +506,7 @@
       border-radius: 10px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       width: 100%;
       transition: 0.2s;
     }
@@ -528,7 +529,7 @@
       border: none;
       cursor: pointer;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 15px;
       transition: 0.3s;
     }
 
@@ -672,7 +673,13 @@
     // Load phase 2 data
     function loadPhase2Data() {
       if (storage.phase2Result) {
-        const parsed = JSON.parse(storage.phase2Result);
+        const parsed = (() => {
+          try {
+            return JSON.parse(storage.phase2Result);
+          } catch (error) {
+            return null;
+          }
+        })();
         menuData = parsed?.data ? parsed.data : parsed;
       }
       if (!menuData) {
