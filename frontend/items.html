@@ -24,6 +24,7 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-light);
       color: var(--text-dark);
+      font-size: 16px;
       padding: 40px 20px;
       display: flex;
       justify-content: center;
@@ -59,14 +60,14 @@
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-muted);
     }
     .badge b { color: var(--accent); }
 
     .category-header {
-      font-size: 14px;
+      font-size: 15px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-muted);
@@ -79,7 +80,7 @@
     }
 
     .subcat-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--accent);
       margin: 25px 0 10px;
@@ -93,7 +94,7 @@
       grid-template-columns: 2fr 4fr 100px;
       gap: 12px;
       padding: 0 16px 10px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -121,7 +122,7 @@
       background: var(--field-bg);
       outline: none;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-dark);
       width: 100%;
       padding: 10px 12px;
@@ -142,7 +143,7 @@
 
     .item-name { color: var(--accent); font-weight: 700; }
     .item-price { font-weight: 700; text-align: center; height: 44px; }
-    .item-desc { color: var(--text-muted); font-size: 13px; }
+    .item-desc { color: var(--text-muted); font-size: 14px; }
 
     .item-row:focus-within {
       background-color: var(--accent);
@@ -193,6 +194,7 @@
       border-radius: 14px;
       cursor: pointer;
       font-weight: 700;
+      font-size: 15px;
       width: 100%;
       margin: 10px 0 40px;
       transition: 0.2s;
@@ -215,7 +217,7 @@
       border: none;
       cursor: pointer;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 16px;
       transition: 0.3s;
     }
 
@@ -345,7 +347,13 @@
 
     let menuData = null;
     if (storage.menuRaw) {
-      const parsed = JSON.parse(storage.menuRaw);
+      const parsed = (() => {
+        try {
+          return JSON.parse(storage.menuRaw);
+        } catch (error) {
+          return null;
+        }
+      })();
       menuData = parsed?.data ? parsed.data : parsed; // ✅ tolerate wrapper or direct
     }
 

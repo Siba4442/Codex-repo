@@ -26,6 +26,7 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-light);
       color: var(--text-dark);
+      font-size: 16px;
       padding: 20px;
       display: flex;
       justify-content: center;
@@ -91,7 +92,7 @@
     }
 
     .panel-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--accent);
       margin-bottom: 10px;
@@ -106,7 +107,7 @@
     }
 
     .category-selector-label {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
@@ -119,7 +120,7 @@
       border-radius: 10px;
       background: var(--field-bg);
       font-family: inherit;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-dark);
       cursor: pointer;
       outline: none;
@@ -145,7 +146,7 @@
     }
 
     .items-header {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       text-transform: uppercase;
@@ -191,7 +192,7 @@
     }
 
     .item-name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-dark);
       margin-bottom: 8px;
@@ -215,7 +216,7 @@
     }
 
     .item-bases {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
@@ -242,14 +243,14 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 10px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
     .size-price-input {
       width: 45px !important;
       padding: 2px 4px !important;
-      font-size: 10px !important;
+      font-size: 12px !important;
       height: 18px !important;
       background: #fff !important;
       border: 1px solid var(--border) !important;
@@ -279,7 +280,7 @@
       padding: 30px 20px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     /* RIGHT PANEL - DRAGGABLE BASES */
@@ -317,7 +318,7 @@
       color: white;
       padding: 6px 12px;
       border-radius: 6px;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
@@ -349,7 +350,7 @@
       border: 2px solid var(--border);
       border-radius: 10px;
       cursor: move;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text-dark);
       transition: all 0.2s ease;
@@ -407,7 +408,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -418,7 +419,7 @@
     .base-item-price input {
       width: 70px !important;
       padding: 4px 6px !important;
-      font-size: 11px !important;
+      font-size: 12px !important;
       height: 26px !important;
       background: var(--field-bg) !important;
       border: 1px solid var(--border) !important;
@@ -430,7 +431,7 @@
       padding: 20px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .add-base-section {
@@ -451,7 +452,7 @@
 
     .add-base-form input {
       padding: 8px 10px !important;
-      font-size: 13px !important;
+      font-size: 14px !important;
       border: 1px solid var(--border) !important;
       background: var(--field-bg) !important;
       border-radius: 6px !important;
@@ -468,7 +469,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       transition: 0.2s;
     }
@@ -495,7 +496,7 @@
       border-radius: 10px;
       cursor: pointer;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       width: 100%;
       transition: 0.2s;
     }
@@ -518,7 +519,7 @@
       border: none;
       cursor: pointer;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 15px;
       transition: 0.3s;
     }
 
@@ -666,13 +667,25 @@
     function loadPhase3Data() {
       // Load Phase 2 data (items)
       if (storage.phase2Result) {
-        const parsed = JSON.parse(storage.phase2Result);
+        const parsed = (() => {
+          try {
+            return JSON.parse(storage.phase2Result);
+          } catch (error) {
+            return null;
+          }
+        })();
         menuDataPhase2 = parsed?.data ? parsed.data : parsed;
       }
       
       // Load Phase 3 data (bases)
       if (storage.phase3Result) {
-        const parsed = JSON.parse(storage.phase3Result);
+        const parsed = (() => {
+          try {
+            return JSON.parse(storage.phase3Result);
+          } catch (error) {
+            return null;
+          }
+        })();
         menuDataPhase3 = parsed?.data ? parsed.data : parsed;
       }
       
@@ -683,9 +696,6 @@
         console.error("No phase2 data found in localStorage. Redirecting to size.html");
         window.location.href = "./size.html";
       }
-      console.log("Phase 2 Data Loaded (items):", menuDataPhase2);
-      console.log("Phase 3 Data Loaded (bases):", menuDataPhase3);
-      console.log("Merged menuData for rendering:", menuData);
     }
 
     function getCategories() {

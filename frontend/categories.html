@@ -28,6 +28,7 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-light);
       color: var(--text-dark);
+      font-size: 16px;
       padding: 40px 20px;
       display: flex;
       justify-content: center;
@@ -62,7 +63,7 @@
     }
 
     h2 { margin: 0 0 10px; font-size: 24px; }
-    p { margin: 0 0 20px; color: var(--text-muted); font-size: 14px; }
+    p { margin: 0 0 20px; color: var(--text-muted); font-size: 15px; }
 
     .meta { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
     .badge {
@@ -70,7 +71,7 @@
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-muted);
     }
@@ -78,7 +79,7 @@
 
     .page-section { margin-top: 30px; }
     .page-title {
-      font-size: 14px;
+      font-size: 15px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
@@ -126,7 +127,7 @@
       flex: 1;
       border: none;
       background: transparent;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
       color: var(--text-dark);
       outline: none;
@@ -142,7 +143,7 @@
       color: var(--text-muted);
       border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       transition: all 0.2s ease;
     }
@@ -173,7 +174,7 @@
       flex: 1;
       border: none;
       background: transparent;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--accent);
       outline: none;
@@ -216,6 +217,7 @@
       cursor: pointer;
       font-weight: 600;
       width: 100%;
+      font-size: 15px;
       transition: all 0.2s ease;
     }
     .btn-add:hover { background: var(--accent); color: white; }
@@ -235,7 +237,7 @@
       border: none;
       cursor: pointer;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 16px;
       transition: all 0.3s ease;
     }
 
@@ -246,8 +248,8 @@
     .pink-ghost { background: #fef2f2; color: var(--accent); border: 1px solid var(--accent); }
     .pink-ghost:hover { background: var(--accent); color: white; }
 
-    .status-msg { text-align: center; margin-top: 15px; font-size: 14px; color: var(--accent); font-weight: 600; }
-    .error { color:#b91c1c; background:#fef2f2; padding:12px; border-radius:12px; margin-top:20px; font-size:13px; }
+    .status-msg { text-align: center; margin-top: 15px; font-size: 15px; color: var(--accent); font-weight: 600; }
+    .error { color:#b91c1c; background:#fef2f2; padding:12px; border-radius:12px; margin-top:20px; font-size:14px; }
   </style>
 </head>
 
@@ -312,7 +314,18 @@
       window.location.href = "./index.html";
     }
 
-    let phase1 = JSON.parse(storage.phase1Raw);
+    function safeParse(jsonString, fallback = null) {
+      try {
+        return JSON.parse(jsonString);
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    let phase1 = safeParse(storage.phase1Raw);
+    if (!phase1) {
+      window.location.href = "./index.html";
+    }
 
     let isDirty = false;
     function markDirty() { isDirty = true; }
